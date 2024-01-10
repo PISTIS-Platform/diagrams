@@ -7,3 +7,4 @@
 - Where and how is the GDPR Checker integrated? 
 - Can we simply the parallel calls to Factory Data Storage and Data Catalogue?
 - Should the Searchable Encryption access the Data Storage?
+- Is there a need that components call the Linage Service directly?
