@@ -9,5 +9,5 @@
 - Where and how is the GDPR Checker integrated? 
 - Can we simply the parallel calls to Factory Data Storage and Data Catalogue?
 - Should the Searchable Encryption access the Data Storage?
-- #Yury: yes, the encrypted data will be stored in the Data Storage and the Searchable Encryption will enable the search in it.
+  - #Yury: yes, the encrypted data will be stored in the Data Storage and the Searchable Encryption will enable the search in it.
 - Is there a need that components call the Lineage Service directly?
