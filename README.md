@@ -1,5 +1,10 @@
 # PISTIS Data Flow and Data States
 
+## Overwiew
+- Data Registration and Processing
+- Data Publishing
+- Data Discovery and Acquisition
+
 ## Questions
 - It is not clear which components are integrated in the Job Configurator?
 - When and how is the Data Insights Generator triggered?
