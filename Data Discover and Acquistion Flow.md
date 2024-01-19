@@ -18,7 +18,8 @@ sequenceDiagram
     participant Factory Data Catalogue (Consumer)  
 
 
-opt Data Discover 
+opt Data Discover
+    Data Consumer -> Data Explorer: Commence Data Asset Searching
     PISTIS Data Explorer -> Distributed Query Engine: Insert Search Query
     Distributed Query Engine ->> PISTIS Data Catalogue: Search for Data on the Catalogue
     PISTIS Data Catalogue -->> Distributed Query Engine: Return Dataset's ID on the Catalogue
