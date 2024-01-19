@@ -1,7 +1,7 @@
 ```mermaid
 sequenceDiagram
     autonumber;
-    actor User;
+    actor Data Consumer;
 
     participant PISTIS Data Explorer
     participant Distributed Query Engine
@@ -33,7 +33,7 @@ end
 end
 
 opt Data Acquisition 
-    User ->> PISTIS Data Explorer: Commit to Buys a Data Asset
+    Data Consumer ->> PISTIS Data Explorer: Commit to Buys a Data Asset
     PISTIS Data Explorer ->> Smart Contract Execution Engine: Send Data Asset's Details for Acquisition
     Smart Contract Execution Engine -->> PISTIS Data Explorer: Return Notification on Transaction's Outcome
     PISTIS Data Factory Connector (Consumer) ->> PISTIS Data Factory Connector (Provider): Request to Download Data (based on TransactionID)
