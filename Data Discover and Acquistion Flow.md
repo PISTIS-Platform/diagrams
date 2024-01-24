@@ -7,6 +7,7 @@ sequenceDiagram
     participant Distributed Query Engine
     participant Factory Data Stroage
     participant PISTIS Data Catalogue
+    participant IAM
     participant Usage Intentions Analytics
     participant Smart Contract Execution Engine
     participant PISTIS Data Factory Connector (Provider)
@@ -23,9 +24,9 @@ opt Data Discover
     PISTIS Data Explorer -> Distributed Query Engine: Insert Search Query
     Distributed Query Engine ->> PISTIS Data Catalogue: Search for Data on the Catalogue
     PISTIS Data Catalogue -->> Distributed Query Engine: Return Dataset's ID on the Catalogue
-    Distributed Query Engine ->> Factory Data Stroage: Search on Encrypted Indexes       
-    Factory Data Stroage -->> Distributed Query Engine: Return Result of Encrypted Query
-    Distributed Query Engine ->> PISTIS Data Explorer: Present Combined Results of Query -(Data Assets Complete Metadata)
+    Distributed Query Engine ->> IAM: Query access policies on returned Data Assets
+    IAM -->> Distributed Query Engine: Return authorized Data Assets
+    Distributed Query Engine ->> PISTIS Data Explorer: Present Combined and Authorized Results of Query (Data Assets Complete Metadata)
 opt Intentions Analytics
 PISTIS Data Explorer ->> Usage Intentions Analytics: Send Dataset's ID
 Usage Intentions Analytics  ->> Usage Intentions Analytics: Fill in Intentions Questionnaire
