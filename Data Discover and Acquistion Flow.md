@@ -39,6 +39,10 @@ opt Data Acquisition
     Data Consumer ->> PISTIS Data Explorer (Catalogue UI): Commit to Buys a Data Asset
     PISTIS Data Explorer (Catalogue UI) ->> Smart Contract Execution Engine: Send Data Asset's Details for Acquisition
     Smart Contract Execution Engine -->> PISTIS Data Explorer (Catalogue UI): Return Notification on Transaction's Outcome
+opt Intentions Analytics
+    PISTIS Data Explorer (Catalogue UI)  ->> Usage Intentions Analytics: Send Dataset's ID
+    Usage Intentions Analytics  ->> Usage Intentions Analytics: Fill in Intentions Questionnaire (verified buyer questionnaire)
+end
     PISTIS Data Factory Connector (Consumer) ->> PISTIS Data Factory Connector (Provider): Request to Download Data (based on TransactionID)
     PISTIS Data Factory Connector (Provider) ->> Smart Contract Checker: Request to validate transaction
     Smart Contract Checker -->> PISTIS Data Factory Connector (Provider): Validate Transaction Details
