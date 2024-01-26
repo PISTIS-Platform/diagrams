@@ -5,7 +5,7 @@ sequenceDiagram
 
     participant PISTIS Data Explorer (Catalogue UI)
     participant Distributed Query Engine
-    participant Factory Data Stroage
+    participant Factory Data Storoage
     participant PISTIS Data Catalogue
     participant IAM
     participant Usage Intentions Analytics
