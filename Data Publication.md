@@ -30,7 +30,7 @@ opt NFT Generation
     smartcontractengine ->> NFT: Return existing transactions
     NFT ->> mpd: Return NFT
 end
-    Mad ->> fdv: Request Data Valuation
+    mpd ->> fdv: Request Data Valuation
     fdv ->> mpd: Suggest Data Valuation
     mpd ->> adb: Return Monetisation Plan
     accesspolicieseditor ->> adb: set access policies
