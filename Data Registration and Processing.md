@@ -12,6 +12,8 @@ sequenceDiagram
     participant dataInsightsGenerator as Data Insights<br>Generator
     participant factoryMLRepo as Data Factory ML<br>Model Repository
     participant factoryDataStorage as Factory Data<br>Storage
+    participant iam as Identity Access<br>Manager
+    participant policyEditor as Access Policy<br>Editor
     participant factoryDataCatalogue as Factory Data<br>Catalogue
     participant gdprChecker as GDPR Checker
     participant anonymizer as Anonymizer
@@ -22,6 +24,8 @@ sequenceDiagram
     factoryDataStorage ->> dataCheckIn: Return ID
     dataCheckIn ->> factoryDataCatalogue: Store Metadata
     factoryDataCatalogue ->> dataCheckIn: Acknowledge
+    dataCheckIn ->> iam: Create resource and default ingestion policies in Keycloak
+    iam ->> dataCheckIn: Acknowledge
 
     opt Data Processing 
         dataCheckIn ->> jobConfigurator: Configure Pipeline
@@ -46,6 +50,12 @@ sequenceDiagram
             searchableEncryption ->> factoryDataStorage: Store Encrypted Keyword
             factoryDataStorage ->> searchableEncryption: Acknowledge
             searchableEncryption ->> jobConfigurator: Return Data
+        end
+        opt Access Policies Definition for Ingestion
+            jobConfigurator ->> policyEditor: Start custom policies creation
+            policyEditor ->> iam: Create custom policies for ingestion phase
+            iam ->> policeEditor: Acknowledge
+            policyEditor ->> jobConfigurator: Acknowledge
         end
         jobConfigurator ->> dataQualityAssess: Assess Data
         dataQualityAssess ->> jobConfigurator: Return Assessment
@@ -78,7 +88,20 @@ sequenceDiagram
     end
 
 
+
+
     
+
+    
+
+
+    
+
+
+
+
+
+
 
     
 
