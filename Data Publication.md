@@ -13,7 +13,7 @@ sequenceDiagram
     participant smartcontractengine as Smart Contract Execution Engine
     participant contractchecker as Smart Contract Checker
     participant onoffinspector as On/Off Platform Inspector
-
+    participant iam as Identity Access<br>Manager
 
 
     adb ->> factoryDataCatalogue: Select Dataset
@@ -33,7 +33,10 @@ end
     mpd ->> fdv: Request Data Valuation
     fdv ->> mpd: Suggest Data Valuation
     mpd ->> adb: Return Monetisation Plan
-    accesspolicieseditor ->> adb: set access policies
+
+    adb ->> accesspolicieseditor: set access policies
+    accesspolicieseditor ->> adb: acknowledge
+
     adb ->> ctc: Request Contract Text generation
     ctc ->> adb: Return Contract Text
     adb ->> smartcontractengine: Execute Contract for Publishing Data Asset
@@ -42,6 +45,9 @@ end
     smartcontractengine ->> contractchecker: Check "Reshare" Counter (if exists)
     contractchecker->> smartcontractengine: Return if counter is exceeded or not
     smartcontractengine ->> adb: Return contract results
+
+    adb --> iam: store access policies
+
     adb ->> PISTISCatalogue: Publish Data Asset in Catalogue and link to contract
     adb ->> factoryDataCatalogue: Notify that Asset is published as listin X (could be multiple)
 
