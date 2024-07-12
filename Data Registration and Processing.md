@@ -1,7 +1,8 @@
 ```mermaid
 sequenceDiagram
     autonumber
-    participant dataStorage as Data Storage
+    participant dataSource as Data Source
+    actor User;
     participant dataCheckIn as Data Check-In
     participant dataTransformation as Data Transformation
     participant dataEnrichment as Data Enrichment
@@ -12,60 +13,78 @@ sequenceDiagram
     participant dataInsightsGenerator as Data Insights<br>Generator
     participant factoryMLRepo as Data Factory ML<br>Model Repository
     participant factoryDataStorage as Factory Data<br>Storage
-    participant iam as Identity Access<br>Manager
-    participant policyEditor as Access Policy<br>Editor
     participant factoryDataCatalogue as Factory Data<br>Catalogue
     participant gdprChecker as GDPR Checker
     participant anonymizer as Anonymizer
-    participant lineageTracker as Lineaga Tracker
+    participant lineageTracker as Lineage Tracker
+    participant iam as Identity Access<br>Manager
+    participant policyEditor as Access Policy<br>Editor
 
-    dataStorage ->> jobConfigurator: Configure Pipeline
-    jobConfigurator ->> dataStorage: Acknowledge
-    dataStorage ->> jobConfigurator: Trigger Pipeline
-    jobConfigurator ->> dataCheckIn: Upload Data and Metadata
-    dataCheckIn ->> jobConfigurator: Return Data
     
 
-    opt Data Processing 
-        
-        opt Insights
-            jobConfigurator ->> dataInsightsGenerator: Create Insights
-            dataInsightsGenerator ->> jobConfigurator: Return Insights
-        end
-        opt Enrichment
-            jobConfigurator ->> dataEnrichment: Enrich Data
-            dataEnrichment ->> jobConfigurator: Return Data
-        end
-        opt Searchable Encryption
-            jobConfigurator ->> searchableEncryption: Enable Searchable Encryption
-            searchableEncryption ->> factoryDataStorage: Store Encrypted Keyword
-            factoryDataStorage ->> searchableEncryption: Acknowledge
-            searchableEncryption ->> jobConfigurator: Return Data
-        end
-        opt Access Policies Definition for Ingestion
-            jobConfigurator ->> policyEditor: Start custom policies creation
-            policyEditor ->> iam: Create custom policies for ingestion phase
-            iam ->> policeEditor: Acknowledge
-            policyEditor ->> jobConfigurator: Acknowledge
-        end
-        jobConfigurator ->> dataQualityAssess: Assess Data
-        dataQualityAssess ->> jobConfigurator: Return Assessment
-        jobConfigurator ->> factoryDataStorage: Store Data
+    User ->> jobConfigurator: Configure Pipeline
+    jobConfigurator ->> User: Acknowledge
+    User ->> jobConfigurator: Trigger Pipeline
+    jobConfigurator ->> dataCheckIn: Get Data File
+    dataCheckIn ->> dataSource: Get File
+    dataSource ->> dataCheckIn: File
+    dataCheckIn ->> jobConfigurator: Return Data File
+
+    opt Transformation
+        jobConfigurator ->> dataTransformation: Transform Data in File
+        dataTransformation ->> jobConfigurator: Return File
+    end
+    opt Insights
+        jobConfigurator ->> dataInsightsGenerator: Create Insights
+        dataInsightsGenerator ->> jobConfigurator: Return Insights
+    end
+
+
+    opt Searchable Encryption
+        jobConfigurator ->> searchableEncryption: Enable Searchable Encryption
+        searchableEncryption ->> jobConfigurator: Return Data (Keywords?)
+    end
+
+    jobConfigurator ->> factoryDataStorage: Save Data
+    factoryDataStorage ->> lineageTracker: Save Lineage Data
+    lineageTracker ->> factoryDataStorage: Acknowledge
+    factoryDataStorage ->> jobConfigurator: Acknowledge
+    jobConfigurator ->> factoryDataCatalogue: Save Metadata (basic metadata and insights)
+    factoryDataCatalogue ->> jobConfigurator: Acknowledge
+
+
+    opt Access Policies Definition for Ingestion
+        User ->> policyEditor: Start custom policies creation
+        policyEditor ->> iam: Create custom policies for ingestion phase
+        iam ->> policyEditor: Acknowledge
+        policyEditor ->> User: Acknowledge
+    end
+
+    opt Enrichment
+        User ->> factoryDataCatalogue: Enrich Selected Data Asset
+        factoryDataCatalogue ->> dataEnrichment: Enrich Selected Data File
+        dataEnrichment ->> factoryDataCatalogue: Get the structure information
+        factoryDataCatalogue ->> dataEnrichment: Return the structure information
+        dataEnrichment ->> User: Show Data and the Structure Information
+        User ->> dataEnrichment: Refine data Semantics/structure
+        dataEnrichment ->> factoryDataStorage: Update Data
         factoryDataStorage ->> lineageTracker: Store Lineage Data
         lineageTracker ->> factoryDataStorage: Acknowledge
-        jobConfigurator ->> factoryDataCatalogue: Store Metadata
-        factoryDataCatalogue ->> jobConfigurator: Acknowledge
+        factoryDataStorage ->> dataEnrichment: Acknowledge
+        dataEnrichment ->> factoryDataCatalogue: Update Metadata
+        factoryDataCatalogue ->> dataEnrichment: Acknowledge
+        dataEnrichment ->> User: Acknowledge
     end
 
-    opt Data Analytics
-        analyticsEngine ->> factoryDataStorage: Get Data
-        analyticsEngine ->> factoryMLRepo: Get ML Models
-        factoryMLRepo ->> analyticsEngine: Return ML Models
-        analyticsEngine ->> analyticsEngine: Create Analytics
+    opt Data Quality Assessment
+        User ->> dataQualityAssess: Assess Data
+        dataQualityAssess ->> User: Return Assessment    
     end
-    
+
     opt Data Anonymization 
-        anonymizer ->> factoryDataCatalogue: Get Metadata
+        User ->> factoryDataCatalogue: Anonymize Data Asset
+        factoryDataCatalogue ->> anonymizer: Anonymize Selected Data File
+        anonymizer->> factoryDataCatalogue: Get Metadata
         factoryDataCatalogue ->> anonymizer: Return Metadata
         anonymizer ->> factoryDataStorage: Get Data
         factoryDataStorage ->> anonymizer: Return Data
@@ -76,30 +95,19 @@ sequenceDiagram
         factoryDataStorage ->> lineageTracker: Store Lineage Data
         lineageTracker ->> factoryDataStorage: Acknowledge
         factoryDataStorage ->> anonymizer: Acknowledge
+        anonymizer ->> User: Acknowledge
     end
 
 
-
-    
-
-    
-
-
-    
-
-
-
-
-
-
-
-    
-
-
-    
-
-
-
-
-
-
+    opt Data Analytics
+        User ->> factoryDataCatalogue: Analyse Data Asset
+        factoryDataCatalogue ->> analyticsEngine: Analyse Selected Data File        
+        analyticsEngine ->> factoryDataStorage: Get Data
+        factoryDataStorage ->> analyticsEngine: Return Data
+        analyticsEngine ->> factoryMLRepo: Get ML Models
+        factoryMLRepo ->> analyticsEngine: Return ML Models
+        analyticsEngine ->> User: Show list and Request to select an ML Model
+        User ->> analyticsEngine: Selected ML Model
+        analyticsEngine ->> analyticsEngine: Create Analytics
+        analyticsEngine ->> User: Analytics Results
+    end  
