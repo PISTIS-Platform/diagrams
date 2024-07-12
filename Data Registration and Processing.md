@@ -27,15 +27,7 @@ sequenceDiagram
     
 
     opt Data Processing 
-        dataCheckIn ->> jobConfigurator: Configure Pipeline
-        jobConfigurator ->> dataCheckIn: Acknowledge
-        dataCheckIn ->> jobConfigurator: Trigger Pipeline
-        jobConfigurator ->> factoryDataStorage: Get Data
-        factoryDataStorage ->> jobConfigurator: Return Data
-        opt Transformation
-            jobConfigurator ->> dataTransformation: Transform Data
-            dataTransformation ->> jobConfigurator: Return Data
-        end
+        
         opt Insights
             jobConfigurator ->> dataInsightsGenerator: Create Insights
             dataInsightsGenerator ->> jobConfigurator: Return Insights
