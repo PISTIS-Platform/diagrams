@@ -18,6 +18,7 @@ participant factoryDataCatalogue as Factory Data<br>Catalogue
 participant gdprChecker as GDPR Checker
 participant anonymizer as Anonymizer
 participant lineageTracker as Lineaga Tracker
+participant pistisDataCatalogue as Pistis Data Catalogue
 participant contractInspectorOffPlatform as Off Platform Contract Inspector
 
     dataStorage ->> dataCheckIn: Upload Data and Metadata
@@ -60,8 +61,10 @@ participant contractInspectorOffPlatform as Off Platform Contract Inspector
         end
         opt Check similarity of new dataset with existing datasets
             jobConfigurator ->> contractInspectorOffPlatform: Start inspection
-            contractInspectorOffPlatform ->> factoryDataCatalogue: Store similarity with existing datasets
             contractInspectorOffPlatform ->> jobConfigurator: Acknowledge
+            contractInspectorOffPlatform ->> pistisDataCatalogue: Ask for the fingerprints of the exisitng datasets
+            pistisDataCatalogue ->> contractInspectorOffPlatform: Return the fingerprints
+            contractInspectorOffPlatform ->> factoryDataCatalogue: Store similarity with existing datasets
         end
         jobConfigurator ->> dataQualityAssess: Assess Data
         dataQualityAssess ->> jobConfigurator: Return Assessment
