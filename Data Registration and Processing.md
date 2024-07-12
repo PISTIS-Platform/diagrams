@@ -19,13 +19,12 @@ sequenceDiagram
     participant anonymizer as Anonymizer
     participant lineageTracker as Lineaga Tracker
 
-    dataStorage ->> dataCheckIn: Upload Data and Metadata
-    dataCheckIn ->> factoryDataStorage: Store Data
-    factoryDataStorage ->> dataCheckIn: Return ID
-    dataCheckIn ->> factoryDataCatalogue: Store Metadata
-    factoryDataCatalogue ->> dataCheckIn: Acknowledge
-    dataCheckIn ->> iam: Create resource and default ingestion policies in Keycloak
-    iam ->> dataCheckIn: Acknowledge
+    dataStorage ->> jobConfigurator: Configure Pipeline
+    jobConfigurator ->> dataStorage: Acknowledge
+    dataStorage ->> jobConfigurator: Trigger Pipeline
+    jobConfigurator ->> dataCheckIn: Upload Data and Metadata
+    dataCheckIn ->> jobConfigurator: Return Data
+    
 
     opt Data Processing 
         dataCheckIn ->> jobConfigurator: Configure Pipeline
@@ -86,7 +85,6 @@ sequenceDiagram
         lineageTracker ->> factoryDataStorage: Acknowledge
         factoryDataStorage ->> anonymizer: Acknowledge
     end
-
 
 
 
