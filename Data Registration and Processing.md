@@ -1,23 +1,24 @@
-```mermaid
+
 sequenceDiagram
-    autonumber
-    participant dataStorage as Data Storage
-    participant dataCheckIn as Data Check-In
-    participant dataTransformation as Data Transformation
-    participant dataEnrichment as Data Enrichment
-    participant dataQualityAssess as Data Quality<br>Assessment
-    participant searchableEncryption as Searchable Encryption
-    participant jobConfigurator as Job Configurator
-    participant analyticsEngine as Analytics Engine
-    participant dataInsightsGenerator as Data Insights<br>Generator
-    participant factoryMLRepo as Data Factory ML<br>Model Repository
-    participant factoryDataStorage as Factory Data<br>Storage
-    participant iam as Identity Access<br>Manager
-    participant policyEditor as Access Policy<br>Editor
-    participant factoryDataCatalogue as Factory Data<br>Catalogue
-    participant gdprChecker as GDPR Checker
-    participant anonymizer as Anonymizer
-    participant lineageTracker as Lineaga Tracker
+autonumber
+participant dataStorage as Data Storage
+participant dataCheckIn as Data Check-In
+participant dataTransformation as Data Transformation
+participant dataEnrichment as Data Enrichment
+participant dataQualityAssess as Data Quality<br>Assessment
+participant searchableEncryption as Searchable Encryption
+participant jobConfigurator as Job Configurator
+participant analyticsEngine as Analytics Engine
+participant dataInsightsGenerator as Data Insights<br>Generator
+participant factoryMLRepo as Data Factory ML<br>Model Repository
+participant factoryDataStorage as Factory Data<br>Storage
+participant iam as Identity Access<br>Manager
+participant policyEditor as Access Policy<br>Editor
+participant factoryDataCatalogue as Factory Data<br>Catalogue
+participant gdprChecker as GDPR Checker
+participant anonymizer as Anonymizer
+participant lineageTracker as Lineaga Tracker
+participant contractInspectorOffPlatform as Off Platform Contract Inspector
 
     dataStorage ->> dataCheckIn: Upload Data and Metadata
     dataCheckIn ->> factoryDataStorage: Store Data
@@ -57,6 +58,11 @@ sequenceDiagram
             iam ->> policeEditor: Acknowledge
             policyEditor ->> jobConfigurator: Acknowledge
         end
+        opt Check similarity of new dataset with existing datasets
+            jobConfigurator ->> contractInspectorOffPlatform: Start inspection
+            contractInspectorOffPlatform ->> factoryDataCatalogue: Store similarity with existing datasets
+            contractInspectorOffPlatform ->> jobConfigurator: Acknowledge
+        end
         jobConfigurator ->> dataQualityAssess: Assess Data
         dataQualityAssess ->> jobConfigurator: Return Assessment
         jobConfigurator ->> factoryDataStorage: Store Data
@@ -86,30 +92,3 @@ sequenceDiagram
         lineageTracker ->> factoryDataStorage: Acknowledge
         factoryDataStorage ->> anonymizer: Acknowledge
     end
-
-
-
-
-    
-
-    
-
-
-    
-
-
-
-
-
-
-
-    
-
-
-    
-
-
-
-
-
-
