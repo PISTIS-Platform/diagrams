@@ -19,6 +19,7 @@ sequenceDiagram
     participant lineageTracker as Lineage Tracker
     participant iam as Identity Access<br>Manager
     participant policyEditor as Access Policy<br>Editor
+    participant dqlsh as Distributed Query LSH
 
     
 
@@ -46,6 +47,8 @@ sequenceDiagram
     end
 
     jobConfigurator ->> factoryDataStorage: Save Data
+    factoryDataStorage ->> dqlsh: Trigger LSH indexing
+    dqlsh ->> dqlsh: Generate LSH index
     factoryDataStorage ->> lineageTracker: Save Lineage Data
     lineageTracker ->> factoryDataStorage: Acknowledge
     factoryDataStorage ->> jobConfigurator: Acknowledge
