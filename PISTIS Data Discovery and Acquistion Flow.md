@@ -5,7 +5,6 @@ sequenceDiagram
 
     participant PISTIS Data Explorer (Catalogue UI)
     participant Distributed Query Engine
-    participant Factory Data Storoage
     participant PISTIS Data Catalogue
     participant IAM
     participant Usage Intentions Analytics
@@ -16,7 +15,8 @@ sequenceDiagram
     participant Factory Data Storage (Provider)
     participant Factory Data Catalogue (Provider)  
     participant Factory Data Storage (Consumer)
-    participant Factory Data Catalogue (Consumer)  
+    participant Factory Data Catalogue (Consumer)
+    participant dqlsh as Distributed Query LSH (all Data Factories)  
 
 
 opt Data Discover
@@ -24,6 +24,8 @@ opt Data Discover
     PISTIS Data Explorer (Catalogue UI) -> Distributed Query Engine: Insert Search Query
     Distributed Query Engine ->> PISTIS Data Catalogue: Search for Data on the Catalogue
     PISTIS Data Catalogue -->> Distributed Query Engine: Return Dataset's ID on the Catalogue
+    Distributed Query Engine ->> dqlsh: Search for Data in the Data Storage of Factories
+    dqlsh -->> Distributed Query Engine: Return Dataset's ID
     Distributed Query Engine ->> IAM: Query access policies on returned Data Assets
     IAM -->> Distributed Query Engine: Return authorized Data Assets
     Distributed Query Engine -->> Distributed Query Engine: Filter out datasets with no access rights to them
@@ -33,6 +35,10 @@ PISTIS Data Explorer (Catalogue UI)  ->> Usage Intentions Analytics: Send Datase
 Usage Intentions Analytics  ->> Usage Intentions Analytics: Fill in Intentions Questionnaire (general questionnaire for all users)
 end
 
+opt Data Valuation
+PISTIS Data Explorer (Catalogue UI)  ->> fdv: Request Data Valuation Report
+fdv  ->> PISTIS Data Explorer (Catalogue UI): Return Data Valuation Score
+end
 end
 
 opt Data Acquisition 
