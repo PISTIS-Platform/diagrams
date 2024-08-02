@@ -47,6 +47,13 @@ opt Data Acquisition
     Smart Contract Execution Engine -->> Smart Contract Checker: Check if asset can be sold (checking the RESALE counter set in the acquired license (if exists)
     Smart Contract Checker -->> Smart Contract Execution Engine: Provide Clearance for Transaction
     Smart Contract Execution Engine -->> Notification Service: Return Notification on Transaction's Outcome
+
+
+
+
+
+
+    Notification Service ->> PISTIS Data Factory Connector (Consumer): Trigger Data Transfer flow
     PISTIS Data Factory Connector (Consumer) ->> PISTIS Data Factory Connector (Provider): Request to Download Data (based on TransactionID)
     PISTIS Data Factory Connector (Provider) ->> Smart Contract Execution Engine: Initiate Transaction
     Smart Contract Execution Engine ->> Smart Contract Checker: Request to validate transaction
