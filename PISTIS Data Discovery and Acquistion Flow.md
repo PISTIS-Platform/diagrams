@@ -16,8 +16,8 @@ sequenceDiagram
     participant Factory Data Catalogue (Provider)  
     participant Factory Data Storage (Consumer)
     participant Factory Data Catalogue (Consumer)
-    participant dqlsh as Distributed Query LSH (all Data Factories)  
-
+    participant dqlsh as Distributed Query LSH (all Data Factories)
+    participant Notification Service
 
 opt Data Discover
     Data Consumer -> PISTIS Data Explorer (Catalogue UI): Commence Data Asset Searching
@@ -46,23 +46,24 @@ opt Data Acquisition
     PISTIS Data Explorer (Catalogue UI) ->> Smart Contract Execution Engine: Send Data Asset's Details for Acquisition
     Smart Contract Execution Engine -->> Smart Contract Checker: Check if asset can be sold (checking the RESALE counter set in the acquired license (if exists)
     Smart Contract Checker -->> Smart Contract Execution Engine: Provide Clearance for Transaction
-    Smart Contract Execution Engine -->> PISTIS Data Explorer (Catalogue UI): Return Notification on Transaction's Outcome
-opt Intentions Analytics
-    PISTIS Data Explorer (Catalogue UI)  ->> Usage Intentions Analytics: Send Dataset's ID
-    Usage Intentions Analytics  ->> Usage Intentions Analytics: Fill in Intentions Questionnaire (verified buyer questionnaire)
-end
+    Smart Contract Execution Engine -->> Notification Service: Return Notification on Transaction's Outcome
     PISTIS Data Factory Connector (Consumer) ->> PISTIS Data Factory Connector (Provider): Request to Download Data (based on TransactionID)
     PISTIS Data Factory Connector (Provider) ->> Smart Contract Execution Engine: Initiate Transaction
     Smart Contract Execution Engine ->> Smart Contract Checker: Request to validate transaction
     Smart Contract Checker -->> Smart Contract Execution Engine: Validate Transaction Details and Give Clearance
-    PISTIS Data Factory Connector (Provider) ->> Factory Data Storage (Provider): Request Data Asset
-    Factory Data Storage (Provider) -->> PISTIS Data Factory Connector (Provider): Return Data Asset
     PISTIS Data Factory Connector (Provider) ->> Factory Data Catalogue (Provider): Request Asset's Metadata
     Factory Data Catalogue (Provider) -->> PISTIS Data Factory Connector (Provider): Return Asset's Metadata
+    PISTIS Data Factory Connector (Provider) ->> Factory Data Storage (Provider): Request Data Asset
+    Factory Data Storage (Provider) -->> PISTIS Data Factory Connector (Provider): Return Data Asset
     PISTIS Data Factory Connector (Provider) ->> PISTIS Data Factory Connector (Consumer): Transfer payload
-    PISTIS Data Factory Connector (Consumer) ->> Factory Data Storage (Consumer): Store Data Asset
     PISTIS Data Factory Connector (Consumer) ->> Factory Data Catalogue (Consumer): Store Data Asset's Metadata
+    PISTIS Data Factory Connector (Consumer) ->> Factory Data Storage (Consumer): Store Data Asset
     PISTIS Data Factory Connector (Consumer) --> Smart Contract Execution Engine: Record Transfer Details
+
+opt Intentions Analytics
+    PISTIS Data Explorer (Catalogue UI)  ->> Usage Intentions Analytics: Send Dataset's ID
+    Usage Intentions Analytics  ->> Usage Intentions Analytics: Fill in Intentions Questionnaire (verified buyer questionnaire)
+end
 end
 
 
