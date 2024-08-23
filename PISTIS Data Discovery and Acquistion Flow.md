@@ -49,8 +49,19 @@ opt Data Acquisition
     Smart Contract Execution Engine -->> Notification Service: Return Notification on Transaction's Outcome
 
 
-
-
+    %% Data Catalogue (Factory of Buyer) -> Smart Contract Execution Engine (Factory of Buyer) : Buyer A wants to buy Dataset X from Factory Y
+    %% Smart Contract Execution Engine (Factory of Buyer) -> Smart Contract Execution Engine (PISTIS Platform): Give me the address of the owner of Dataset X from Factory Y
+    %% Smart Contract Execution Engine (Pistis Platform) -> Smart Contract Execution Engine (Factory of Seller): Get address of the owner
+    %% Smart Contract Execution Engine (Pistis Platform) -> Smart Contract Execution Engine (Factory of Buyer): Send back the address of the owner
+    %% Smart Contract Execution Engine (Factory of Buyer) -> Identity Wallet (Factory of Buyer): Pass Buyer, Seller, Price
+    %% Identity Wallet (Factory of Buyer) -> Monetary Wallet (Factory of Buyer): Initiate the DLT transaction - Pass seller address and price
+    %% Monetary Wallet (Factory of Buyer) -> Identity Wallet (Factory of Buyer) -> Smart Contract Execution Engine (Factory of Buyer) : Pass the transaction ID and store it to the data ledger. The transaction ID denotes that a transaction was successful
+    %% %% Smart Contract Execution Engine (Factory of Buyer): Updates the data ledger
+    %% Smart Contract Execution Engine (Factory of Buyer) -> Notification System (of Marios): Notify about the transaction
+    %% %% Monetary Wallet (Factory of Seller): Get notification that the seller has token deposit
+    %% Monetary Wallet (Factory of Seller) -> Identity Wallet (Factory of Seller): Notify asynchronously about the DLT transaction
+    %% Identity Wallet (Factory of Seller) -> Smart Contract Execution Engine (Factory of Seller): Give the transaction details and update the data ledger in the Seller’s factory
+    %% Smart Contract Execution Engine (Factory of Seller) -> Notification System (of Marios): Notify about the transaction
 
 
     Notification Service ->> PISTIS Data Factory Connector (Consumer): Trigger Data Transfer flow
