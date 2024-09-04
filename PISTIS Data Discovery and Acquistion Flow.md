@@ -94,8 +94,6 @@ opt Data Acquisition
     PISTIS Data Factory Connector (Consumer) --> Smart Contract Execution Engine: Record Transfer Details
 
 opt Intentions Analytics
-PISTIS Data Discovery and Acquistion Flow.md
-Displaying PISTIS Data Discovery and Acquistion Flow.md.
     PISTIS Data Explorer (Catalogue UI)  ->> Usage Intentions Analytics: Send Dataset's ID
     Usage Intentions Analytics  ->> Usage Intentions Analytics: Fill in Intentions Questionnaire (verified buyer questionnaire)
 end
