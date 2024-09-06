@@ -21,7 +21,7 @@ sequenceDiagram
     adb ->> mpd: Select Monetsation Method	
   
 opt Data Investment Plan
-datainvestmentplanner --> mpd: Return Investment Plan
+datainvestmentplanner -->> mpd: Return Investment Plan
 end
 
 opt NFT Generation
@@ -31,7 +31,7 @@ opt NFT Generation
     NFT ->> mpd: Return NFT
 end
     mpd ->> fdv: Request Data Valuation
-    fdv ->> mpd: Suggest Data Valuation
+    fdv ->> mpd: Suggest Data Valuation Score
     mpd ->> adb: Return Monetisation Plan
 
     adb ->> accesspolicieseditor: set access policies
@@ -39,6 +39,7 @@ end
 
     adb ->> ctc: Request Contract Text generation
     ctc ->> adb: Return Contract Text
+    adb ->> adb: Create UUID
     adb ->> smartcontractengine: Execute Contract for Publishing Data Asset
     smartcontractengine ->> onoffinspector: Check if Publishing is permitted according also to license
     onoffinspector ->> smartcontractengine: Return decision
@@ -46,7 +47,7 @@ end
     contractchecker->> smartcontractengine: Return if counter is exceeded or not
     smartcontractengine ->> adb: Return contract results
 
-    adb --> iam: store access policies
+    adb -->> iam: Store access policies
 
     adb ->> PISTISCatalogue: Publish Data Asset in Catalogue and link to contract
     adb ->> factoryDataCatalogue: Notify that Asset is published as listin X (could be multiple)
