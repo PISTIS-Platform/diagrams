@@ -58,7 +58,7 @@ opt Data Acquisition
     %% Purchase Process %%
     PISTIS Data Factory Connector (Consumer) ->> Smart Contract Execution Engine: Buyer A wants to buy Dataset X from Factory Y
     Smart Contract Execution Engine ->> Smart Contract Execution Engine (PISTIS Platform): Get address of the owner
-    Smart Contract Execution Engine (PISTIS Platform) <-> Smart Contract Execution Engine (Factory of Seller): Get address of the owner
+    Smart Contract Execution Engine (PISTIS Platform) ->> Smart Contract Execution Engine (Factory of Seller): Get address of the owner
     Smart Contract Execution Engine (PISTIS Platform) ->> Smart Contract Execution Engine: Send back the address of the owner
     Smart Contract Execution Engine ->> Identity Wallet (Factory of Buyer): Pass Buyer, Seller, Price
     Identity Wallet (Factory of Buyer) ->> Monetary Wallet (Factory of Buyer): Initiate the transaction - Pass buyer address, seller address, and price
