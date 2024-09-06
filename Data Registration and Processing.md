@@ -20,6 +20,8 @@ sequenceDiagram
     participant iam as Identity Access<br>Manager
     participant policyEditor as Access Policy<br>Editor
     participant dqlsh as Distributed Query LSH
+    participant contractInspectorOffPlatform as Off Platform Contract Inspector
+
 
     
 
@@ -62,6 +64,14 @@ sequenceDiagram
         iam ->> policyEditor: Acknowledge
         policyEditor ->> User: Acknowledge
     end
+    
+    opt Check similarity of new dataset with existing datasets
+            jobConfigurator ->> contractInspectorOffPlatform: Start inspection
+            contractInspectorOffPlatform ->> jobConfigurator: Acknowledge
+            contractInspectorOffPlatform ->> pistisDataCatalogue: Ask for the fingerprints of the exisitng datasets
+            pistisDataCatalogue ->> contractInspectorOffPlatform: Return the fingerprints
+            contractInspectorOffPlatform ->> factoryDataCatalogue: Store similarity with existing datasets
+        end
 
     opt Enrichment
         User ->> factoryDataCatalogue: Enrich Selected Data Asset
